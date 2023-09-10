@@ -2,7 +2,7 @@
 Cute examples for Oktane 2023
 
 
-## [sample-web-app](sample-web-app/))
+## [sample-web-app](sample-web-app/)
 
 A sample application to test sign up, login, and logout.
 
