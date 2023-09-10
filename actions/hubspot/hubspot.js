@@ -17,14 +17,18 @@ exports.onExecutePostLogin = async (event, api) => {
     properties: [
       { property: 'firstname', value: event.user.given_name },
       { property: 'lastname', value: event.user.family_name },
+      // TODO: change fixed value after adding consent preference
+      { property: 'consent', value: false },
+
+      { property: 'login_count', value: event.stats.logins_count },
+      { property: 'last_login', value: Date.now() },
       { property: 'phone', value: event.user.phone_number },
       { property: 'email_verified', value: event.user.email_verified },
       { property: 'user_id', value: event.user.user_id },
       { property: 'identity_type', value: event.user.identities[0].provider },
       { property: 'signed_up_from_city', value: (event.request !== undefined) ? event.request.geoip.cityName : '' },
       { property: 'signed_up_from_country', value: (event.request !== undefined) ? event.request.geoip.countryCode3 : '' },
-      { property: 'login_count', value: event.stats.logins_count },
-      { property: 'last_login', value: Date.now() },
+      
     ]
   };
 

@@ -18,14 +18,14 @@
     }
 
     // Check if user has already filled out the form
-    const should_ask_again = event.user.app_metadata["user_info_missed"] ?? true;
-    if (should_ask_again === false) return;
+    const skip_survey_prompt = event.user.app_metadata["zero_party_data_acquired"];
+    if (skip_survey_prompt === true) return;
 
     // SETUP FORM
     // Add existing profile attributes to form if half filled in and then configure the external form for the user.
-    const current_first_name = event.user.user_metadata["first_name"] ?? undefined;
-    const current_last_name = event.user.user_metadata["last_name"] ?? undefined;
-    const current_city = event.user.user_metadata["city"] ?? undefined;
+    const tabs_or_spaces = event.user.user_metadata["tabs_or_spaces"] ?? undefined;
+    const fave_programming_language = event.user.user_metadata["fave_language"] ?? undefined;
+    const salesperson = event.user.user_metadata["salesperson"] ?? undefined;
 
     const theme = {
       css_variables: {
@@ -46,21 +46,38 @@
       inputs: [
         {
           label: "Do you prefer tabs or spaces?",
-          type: "text",
-          metadata_key: "first_name",
-          current: current_first_name,
+          type: "radio",
+          metadata_key: "tabs_or_spaces",
+          current: tabs_or_spaces,
+          options: [
+            "Spaces (the correct one) 😎",
+            "Tabs ¯\_(ツ)_/¯"
+          ],
         },
         {
-          label: "What's your favorite programming language? (only rust or golang allowed)",
-          type: "text",
-          metadata_key: "last_name",
-          current: current_last_name,
+          label: "What's your favorite programming language?",
+          type: "radio",
+          metadata_key: "fave_language",
+          current: fave_programming_language,
+          options: [
+            "JavaScript 🚀",
+            "Rust 🦀",
+            "Golang 🐹",
+            "Java ☕️",
+            "Python 🐍",
+            "Lua 🌙",
+            "Something else 🤔"
+          ],
         },
         {
           label: "Are you a feature thirsty sales person? ",
-          type: "text",
-          metadata_key: "city",
-          current: current_city,
+          type: "radio",
+          metadata_key: "salesperson",
+          current: salesperson,
+          options: [
+            "no 💪",
+            "nope 🤞",
+          ],
         },
       ],
     };
@@ -85,48 +102,48 @@
         redirect_uri: `https://${event.request.hostname}/continue`,
       },
     });
-  };
+};
   
-  // FINAL VALIDATION ON RETURN
-  // OnContinuePostLogin runs when the external page passes back the response and matching state param.
-  exports.onContinuePostLogin = async (event, api) => {
-    const app_metadata_values = [];
-    const skipped_claims = ["user_info_skipped", "state", "action"];
-    let decodedToken;
-    try {
-      decodedToken = api.redirect.validateToken({
-        secret: event.secrets.SESSION_TOKEN_SECRET,
-        tokenParameterName: "session_token",
-      });
-    } catch (error) {
-      // console.log(error.message);
-      return api.access.deny("Error occurred during redirect.");
-    }
-  
-    var customClaims = decodedToken.other;
-    // console.log(customClaims);
-    // Set response values into the user metadata or app metadata.
-    for (const [key, value] of Object.entries(customClaims)) {
-      console.log(key);
-  
-      if (!skipped_claims.includes(key)) {
-        if (app_metadata_values.includes(key)) {
-          api.user.setAppMetadata(key, value);
-        } else {
-          api.user.setUserMetadata(key, value);
-        }
+// FINAL VALIDATION ON RETURN
+// OnContinuePostLogin runs when the external page passes back the response and matching state param.
+exports.onContinuePostLogin = async (event, api) => {
+  const app_metadata_values = [];
+  const skipped_claims = ["user_info_skipped", "state", "action"];
+  let decodedToken;
+  try {
+    decodedToken = api.redirect.validateToken({
+      secret: event.secrets.SESSION_TOKEN_SECRET,
+      tokenParameterName: "session_token",
+    });
+  } catch (error) {
+    // console.log(error.message);
+    return api.access.deny("Error occurred during redirect.");
+  }
+
+  var customClaims = decodedToken.other;
+  // console.log(customClaims);
+  // Set response values into the user metadata or app metadata.
+  for (const [key, value] of Object.entries(customClaims)) {
+    console.log(key);
+
+    if (!skipped_claims.includes(key)) {
+      if (app_metadata_values.includes(key)) {
+        api.user.setAppMetadata(key, value);
+      } else {
+        api.user.setUserMetadata(key, value);
       }
     }
-  
-    // Check if First Name, Last Name, City not entered and flag for next time.
-    var user_info_missed = true;
-    if (
-      customClaims["first_name"] &&
-      customClaims["last_name"] &&
-      customClaims["city"]
-    ) {
-      user_info_missed = false;
-    }
-    api.user.setAppMetadata("user_info_missed", user_info_missed);
-  };
+  }
+
+  // Check if First Name, Last Name, City not entered and flag for next time.
+  var zero_party_data_acquired = true;
+  if (
+    customClaims["tabs_or_spaces"] &&
+    customClaims["fave_language"] &&
+    customClaims["city"]
+  ) {
+    zero_party_data_acquired = false;
+  }
+  api.user.setAppMetadata("zero_party_data_acquired", zero_party_data_acquired);
+};
   
