@@ -2,7 +2,7 @@
 
 Assets to learn more about uniting developers and marketers:
 - [Examples](#examples)
-- [Resources](#resources)
+- [Resources for marketers and developers](#resources)
 - [Cool Oktane 2023 sessions](#cool-oktane-2023-sessions)
 
 ## Examples
