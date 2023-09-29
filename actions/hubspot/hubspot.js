@@ -1,4 +1,5 @@
 const axios = require("axios");
+const uaParser = require("ua-parser-js");
 
 /**
 * Creates or updates a HubSpot contact with the identity information.
@@ -13,11 +14,14 @@ exports.onExecutePostLogin = async (event, api) => {
   'Authorization': `Bearer ${event.secrets.HUBSPOT_BEARER}`
   };
 
+  let userAgent = uaParser(event.request.user_agent); // you need to pass the user-agent for nodejs
+  console.log(userAgent);
+
   const data = {
     properties: [
       { property: 'firstname', value: event.user.given_name },
       { property: 'lastname', value: event.user.family_name },
-      // TODO: change fixed value after adding consent preference
+      // TODO: keeping false by default until I wire consent preferences
       { property: 'consent', value: false },
 
       { property: 'login_count', value: event.stats.logins_count },
@@ -26,8 +30,9 @@ exports.onExecutePostLogin = async (event, api) => {
       { property: 'email_verified', value: event.user.email_verified },
       { property: 'user_id', value: event.user.user_id },
       { property: 'identity_type', value: event.user.identities[0].provider },
-      { property: 'signed_up_from_city', value: (event.request !== undefined) ? event.request.geoip.cityName : '' },
-      { property: 'signed_up_from_country', value: (event.request !== undefined) ? event.request.geoip.countryCode3 : '' },
+      { property: 'user_device_on_last_login', value: (userAgent.os.name !== undefined) ? userAgent.os.name : '' },
+      { property: 'last_login_city', value: (event.request !== undefined) ? event.request.geoip.cityName : '' },
+      { property: 'last_login_country', value: (event.request !== undefined) ? event.request.geoip.countryCode3 : '' },
       
     ]
   };
@@ -40,6 +45,5 @@ exports.onExecutePostLogin = async (event, api) => {
     console.error(error.message);
     return;
   }
-  
   
 };
