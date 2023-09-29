@@ -1,10 +1,13 @@
 # oktane-23
 
-Examples, Resources, and Cool Oktane 2023 sessions to learn more about uniting developers and marketers:
+Assets to learn more about uniting developers and marketers:
+- [Examples](#examples)
+- [Resources](#resources)
+- [Cool Oktane 2023 sessions](#cool-oktane-2023-sessions)
 
 ## Examples
 
-### [sample-web-app](sample-web-app/))
+### [sample-web-app](sample-web-app/)
 
 A sample application to test sign up, login, and logout. You can run it in your own desktop (with NextJS) [Instructions](sample-web-app/README.md) or in Vercel:
 
@@ -32,6 +35,8 @@ For developers:
 
 
 ## Cool Oktane 2023 Sessions:
+
+[Customer Identity - full agenda](https://www.okta.com/oktane/sessions/?filters=customer-identity-cloud-powered-by-auth0,okta-customer-identity-solution)
 
 **Every day**: Okta demo station
 **Oct 4: 04:00 pm**: Developer Keynote
