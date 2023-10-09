@@ -9,9 +9,12 @@ Assets to learn more about uniting developers and marketers:
 
 ### [sample-web-app](sample-web-app/)
 
-A sample application to test sign up, login, and logout. You can run it in your own desktop (with NextJS) [Instructions](sample-web-app/README.md) or in Vercel:
+A sample application to test sign up, login, and logout. You can run it:
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fsudobinbash%2Foktane-23%2Ftree%2Fmain%2Fsample-web-app&env=AUTH0_SCOPE,AUTH0_CLIENT_ID,AUTH0_CLIENT_SECRET,AUTH0_ISSUER_BASE_URL,AUTH0_SECRET,AUTH0_BASE_URL&envDescription=For%20values%2C%20visit&envLink=https%3A%2F%2Fgithub.com%2Fsudobinbash%2Foktane-23%2Ftree%2Fmain%2Fsample-web-app%23configure-credentials)
+[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/fork/github/sudobinbash/oktane-23)
+
+To run in your own desktop (with NextJS): [Instructions](sample-web-app/README.md)
 
 ### Actions 
 

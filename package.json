@@ -1,0 +1,8 @@
+{
+    "name": "oktane-23-samples",
+    "version": "1.0.0",
+    "private": true,
+    "workspaces": [
+      "sample-web-app"
+    ]
+  }
